@@ -32,7 +32,7 @@ jobs:
           sudo apt-get install -y openssh-client
           echo "${{ secrets.EC2_KEY }}" > key.pem
           chmod 600 key.pem
-          scp -o StrictHostKeyChecking=no -i key.pem -r build/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home
+          scp -o StrictHostKeyChecking=no -i key.pem -r build/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu
 
       - name: Deploy to Nginx
         env:
@@ -40,6 +40,6 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
           ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          sudo mv /home /var/www/html/
+          sudo mv /home/ubuntu /var/www/html/
           sudo systemctl restart nginx
           EOF
